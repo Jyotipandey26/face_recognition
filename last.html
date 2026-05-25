@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registered Students</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            color: white;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav {
+            background: #111;
+            padding: 15px;
+            font-size: 22px;
+            color: #e50914;
+        }
+
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background: #111;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #333;
+        }
+
+        th {
+            background: #e50914;
+        }
+
+        img {
+            width: 80px;
+            border-radius: 8px;
+        }
+
+        tr:hover {
+            background: #222;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>🎬 Registered Students</nav>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let table = document.getElementById("tableBody");
+
+students.forEach(student => {
+    let row = `
+        <tr>
+            <td>${student.name}</td>
+            <td>${student.id}</td>
+            <td><img src="${student.imageData}"></td>
+        </tr>
+    `;
+    table.innerHTML += row;
+});
+function save() {
+    let name = document.getElementById("name").value;
+    let id = document.getElementById("id").value;
+
+    if (!name || !id || !imageData) {
+        alert("Fill all fields!");
+        return;
+    }
+
+    let student = { name, id, imageData };
+
+    // Save in array (important)
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+    students.push(student);
+
+    localStorage.setItem("students", JSON.stringify(students));
+
+    alert("Registered Successfully!");
+
+    // Redirect to list page
+    window.location.href = "students.html";
+function save() {
+    let name = document.getElementById("name").value;
+    let id = document.getElementById("id").value;
+
+    if (!name || !id || !imageData) {
+        alert("Please fill all fields and capture image!");
+        return;
+    }
+
+    let student = { name, id, imageData };
+
+    // ✅ store in ARRAY (this is the key fix)
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+    students.push(student);
+
+    localStorage.setItem("students", JSON.stringify(students));
+
+    alert("✅ Registered Successfully!");
+
+    // ✅ go to list page
+    window.location.href = "students.html";
+}let stream;
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(s => {
+        stream = s;
+        document.getElementById("video").srcObject = stream;
+    });
+}
+
+function capture() {
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let video = document.getElementById("video");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0);
+
+    imageData = canvas.toDataURL();
+
+    // ✅ stop camera
+    stream.getTracks().forEach(track => track.stop());
+}
+}
+</script>
+
+</body>
+</html>

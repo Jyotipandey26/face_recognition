@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #000000, #1a1a1a);
+            color: white;
+        }
+
+        /* NAVBAR */
+        nav {
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #e50914;
+            letter-spacing: 1px;
+        }
+
+        /* MAIN CARD */
+        .container {
+            width: 350px;
+            margin: 60px auto;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(255,0,0,0.3);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        /* INPUTS */
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: #222;
+            color: white;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        /* VIDEO + CANVAS */
+        video, canvas {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 2px solid #333;
+        }
+
+        /* BUTTONS */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .primary {
+            background: #e50914;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #b20710;
+            transform: scale(1.03);
+        }
+
+        .secondary {
+            background: #333;
+            color: white;
+        }
+
+        .secondary:hover {
+            background: #555;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #111;
+            color: #aaa;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>🎬 Student Registration</nav>
+
+<div class="container">
+    <h2>Register Student</h2>
+
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="text" id="id" placeholder="Enter ID">
+
+    <video id="video" autoplay></video>
+
+    <button class="btn secondary" onclick="startCamera()">📷 Open Camera</button>
+    <button class="btn secondary" onclick="capture()">📸 Capture</button>
+
+    <canvas id="canvas"></canvas>
+
+    <button onclick="window.location.href='http://127.0.0.1:5500/first.html/last.html'" class="btn primary" onclick="save()">✅ Submit</button>
+</div>
+
+<footer>© 2026 AI Vision | All Rights Reserved</footer>
+
+<script>
+let imageData = "";
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        document.getElementById("video").srcObject = stream;
+    });
+}
+
+function capture() {
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let video = document.getElementById("video");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    ctx.drawImage(video, 0, 0);
+    imageData = canvas.toDataURL();
+}
+
+function save() {
+    let name = document.getElementById("name").value;
+    let id = document.getElementById("id").value;
+
+    if (!name || !id || !imageData) {
+        alert("Please fill all fields and capture image!");
+        return;
+    }
+
+    let student = { name, id, imageData };
+    localStorage.setItem(id, JSON.stringify(student));
+
+    alert("✅ Registered Successfully!");
+    window.location.href = "dashboard.html";
+    function save() {
+    let name = document.getElementById("name").value;
+    let id = document.getElementById("id").value;
+
+    if (!name || !id || !imageData) {
+        alert("Please fill all fields and capture image!");
+        return;
+    }
+
+    let student = { name, id, imageData };
+
+    // ✅ store in ARRAY (this is the key fix)
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+    students.push(student);
+
+    localStorage.setItem("students", JSON.stringify(students));
+
+    alert("✅ Registered Successfully!");
+
+    // ✅ go to list page
+    window.location.href = "students.html";
+}
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+students.forEach(student => {
+    let row = `
+        <tr>
+            <td>${student.name}</td>
+            <td>${student.id}</td>
+            <td><img src="${student.imageData}"></td>
+        </tr>
+    `;
+    table.innerHTML += row;
+});
+let stream;
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(s => {
+        stream = s;
+        document.getElementById("video").srcObject = stream;
+    });
+}
+
+function capture() {
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let video = document.getElementById("video");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0);
+
+    imageData = canvas.toDataURL();
+
+    // ✅ stop camera
+    stream.getTracks().forEach(track => track.stop());
+}
+}
+</script>
+
+</body>
+</html>

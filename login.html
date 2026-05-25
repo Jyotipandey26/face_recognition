@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login System</title>
+
+<style>
+body {
+    margin:0;
+    font-family: Arial;
+}
+
+/* NAVBAR */
+nav {
+    background:#333;
+    color:white;
+    padding:10px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.left {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.profile {
+    display:none;
+    align-items:center;
+    gap:10px;
+}
+
+.profile img {
+    width:30px;
+    height:30px;
+    border-radius:50%;
+}
+
+.right button {
+    margin-left:10px;
+    padding:6px 12px;
+    border:none;
+    cursor:pointer;
+}
+
+.login-btn { background:blue; color:white; }
+.signup-btn { background:green; color:white; }
+
+/* LOGIN FORM */
+.container {
+    width:300px;
+    margin:80px auto;
+    padding:20px;
+    border:1px solid black;
+}
+
+input {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+.signin-btn {
+    width:50%;
+    padding:10px;
+    background:purple;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+/* FOOTER */
+footer {
+    background:#333;
+    color:white;
+    text-align:center;
+    padding:15px;
+    position:fixed;
+    bottom:0;
+    width:100%;
+}
+
+.icons span {
+    margin:0 10px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="left">
+        <strong>Image Recognition</strong>
+
+        <!-- Profile (after login) -->
+        <div class="profile" id="profile">
+            <img src="https://via.placeholder.com/30">
+            <span id="username">User</span>
+        </div>
+    </div>
+
+    <div class="right" id="authButtons">
+        <button class="login-btn">Login</button>
+        <button type="submit" class="signin-btn" onclick="window.location.href='http://127.0.0.1:5500/first.html/html.html'">sign in</button>
+    </div>
+</nav>
+
+<!-- LOGIN FORM -->
+<div class="container">
+    <h2>Sign In</h2>
+
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="Enter Email" required>
+        <input type="password" id="password" placeholder="Enter Password" required>
+        <button type="submit" class="signin-btn" onclick="window.location.href='http://127.0.0.1:5500/first.html/html.html'">sign in</button>
+    </form>
+
+    <p style="font-size:12px;">
+        <a href="#">Recover Password?</a>
+    </p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div>📞 Toll Free: 1800-123-456</div>
+    <div>📍 Location: New Delhi, India</div>
+
+    <div class="icons">
+        <span>📘 Facebook</span>
+        <span>🐦 Twitter</span>
+        <span>📸 Instagram</span>
+    </div>
+
+    <div>© 2026 Project</div>
+</footer>
+
+<script>
+// LOGIN LOGIC
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    if(email === "" || password === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    // Fake login success
+    alert("Login Successful!");
+
+    // Show profile
+    document.getElementById("profile").style.display = "flex";
+    document.getElementById("username").innerText = email;
+
+    // Hide login/signup buttons
+    document.getElementById("authButtons").style.display = "none";
+});
+</script>
+
+</body>
+</html>

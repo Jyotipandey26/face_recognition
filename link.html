@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Verify Student</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #000, #1a1a1a);
+    color: white;
+    text-align: center;
+}
+
+/* NAV */
+nav {
+    background: #111;
+    padding: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #e50914;
+}
+
+/* CARD */
+.container {
+    margin-top: 40px;
+    width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 25px rgba(255,0,0,0.2);
+}
+
+/* VIDEO */
+video {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid #333;
+}
+
+/* BUTTONS */
+.btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.primary {
+    background: #e50914;
+    color: white;
+}
+.primary:hover {
+    background: #b20710;
+}
+
+.secondary {
+    background: #333;
+    color: white;
+}
+.secondary:hover {
+    background: #555;
+}
+
+/* RESULT BOX */
+.result-box {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.5);
+}
+
+#name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#status {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* FOOTER */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #111;
+    padding: 10px;
+    color: #aaa;
+}
+</style>
+</head>
+
+<body>
+
+<nav>🎬 Verify Student</nav>
+
+<div class="container">
+
+    <h3>Face Verification</h3>
+
+    <video id="video" autoplay></video>
+
+    <button class="btn secondary" onclick="startCamera()">📷 Open Camera</button>
+    <button class="btn primary" onclick="capture()">🔍 Capture & Verify</button>
+
+    <canvas id="canvas" width="300" height="200" style="display:none;"></canvas>
+
+    <div class="result-box">
+        <div id="name"></div>
+        <div id="status">Waiting for scan...</div>
+    </div>
+
+</div>
+
+<footer>© 2026 AI Vision</footer>
+
+<script>
+let capturedImage = "";
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        document.getElementById("video").srcObject = stream;
+    })
+    .catch(() => alert("Camera not allowed!"));
+}
+
+function capture() {
+    let video = document.getElementById("video");
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+
+    ctx.drawImage(video, 0, 0, 300, 200);
+    capturedImage = canvas.toDataURL();
+
+    verifyFace();
+}
+
+function verifyFace() {
+    let found = false;
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        let student = JSON.parse(localStorage.getItem(key));
+
+        if (student.imageData === capturedImage) {
+            document.getElementById("name").innerText = student.name;
+            document.getElementById("status").innerText = "✅ Verified Successfully";
+            document.getElementById("status").style.color = "#0f0";
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        document.getElementById("name").innerText = "";
+        document.getElementById("status").innerText = "❌ Not Registered";
+        document.getElementById("status").style.color = "red";
+    }
+}
+</script>
+
+</body>
+</html>
